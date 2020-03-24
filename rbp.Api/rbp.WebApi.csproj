@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\rbp.Application\rbp.Application.csproj" />
+    <ProjectReference Include="..\rbp.Persistence\rbp.Persistence.csproj" />
   </ItemGroup>
 
 

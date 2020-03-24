@@ -2,15 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using rbp.Domain.ProductContext;
-using rbp.Infrastructure.EFCore;
-using rbp.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
+using rbp.Domain.CalendarContext.Interfaces;
+using rbp.Persistence.EFCore;
 using System.Reflection;
-using System.Text;
 
-namespace rbp.Infrastructure
+namespace rbp.Persistence
 {
     public static class DependencyInjection
     {
@@ -22,7 +18,7 @@ namespace rbp.Infrastructure
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
 
-            services.AddScoped<IProductRepository, EFCoreRepository>();
+            services.AddScoped<ICalendarRepository, CalendarRepository>();
 
 
             return services;

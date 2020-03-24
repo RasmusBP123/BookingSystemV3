@@ -11,6 +11,11 @@ namespace Domain.Entities
         public virtual List<Timeslot> Timeslots { get; private set; } = new List<Timeslot>();
         public virtual List<Team> Teams { get; private set; } = new List<Team>();
 
+        public Calendar(string name)
+        {
+            Name = name;
+        }
+
         public Calendar(Guid id, List<Timeslot> timeslots)
         {
             Id = id;

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Domain.Entities
 {
-    public class Timeslot : ValueObject<Timeslot>
+    public class Timeslot : Entity<Guid>
     {
         public string Description { get; private set; }
         public DateTime From { get; private set; }
@@ -13,6 +13,12 @@ namespace Domain.Entities
         public virtual List<Booking> Bookings { get; private set; } = new List<Booking>();
         public Guid CalendarId { get; private set; }
         public Guid TeacherId { get; private set; }
+
+        public Timeslot(string description, DateTime from, DateTime to)
+        {
+            Description = description;
+            To = to;
+        }
 
         public void CreateBooking(Booking booking) => Bookings.Add(booking);
 

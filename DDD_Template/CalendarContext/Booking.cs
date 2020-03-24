@@ -8,6 +8,7 @@ namespace Domain.Entities
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
         public Guid StudentId { get; private set; }
+        public TimeSpan Duration { get; set; }
 
         public Booking(DateTime from, DateTime to)
         {
@@ -15,10 +16,10 @@ namespace Domain.Entities
             To = to;
         }
 
-        public TimeSpan GetDurationOfBooking(DateTime from, DateTime to)
+        public void GetDurationOfBooking(DateTime from, DateTime to)
         {
             TimeSpan result = to - from;
-            return result;
+            Duration = result;
         }
     }
 }
