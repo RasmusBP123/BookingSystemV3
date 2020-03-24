@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace rbp.Domain.Abstractions
 {
-    public interface IApplicationDBContext
+    public interface ICalendarContext
     {
         public DbSet<Calendar> Calendars { get; set; }
         public DbSet<Booking> Bookings { get; set; }

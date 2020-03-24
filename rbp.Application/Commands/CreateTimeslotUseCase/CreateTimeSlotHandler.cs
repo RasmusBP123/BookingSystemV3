@@ -11,15 +11,15 @@ namespace Application.UseCases.CreateTimeslot
 {
     public class CreateTimeSlotHandler : BaseContext, IRequestHandler<CreateTimeslotCommand, bool>
     {
-        public CreateTimeSlotHandler(IApplicationDBContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public CreateTimeSlotHandler(ICalendarContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
         public async Task<bool> Handle(CreateTimeslotCommand request, CancellationToken cancellationToken)
         {
-            var teacher = _dbContext.Teachers.FirstOrDefault(t => t.Id == request.TeacherId);
-            var calendar = _dbContext.Calendars.FirstOrDefault(cal => cal.Id == request.CalendarId);
-            var timeslotsWhereTeacherIsPresent = _dbContext.Timeslots.Where(timeslot => timeslot.TeacherId == teacher.Id).ToList();
+            var teacher = await _dbContext.Teachers.FindAsync(request.TeacherId);
+            var calendar = await _dbContext.Calendars.FindAsync(request.CalendarId);
+            var timeslotsWhereTeacherIsPresent = _dbContext.Timeslots.Where(timeslot => timeslot.Teacher.Id == teacher.Id).ToList();
 
             var timeSlot = new Timeslot(request.Description, request.From, request.To);
 

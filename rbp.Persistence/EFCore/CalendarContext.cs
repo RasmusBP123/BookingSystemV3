@@ -5,17 +5,16 @@ using rbp.Domain;
 using rbp.Domain.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace rbp.Persistence.EFCore
 {
-    public class ApplicationContext : DbContext, IApplicationDBContext
+    public class CalendarContext : DbContext, ICalendarContext
     {
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
-        {
-            Database.EnsureCreated();
-        }
+        public CalendarContext(DbContextOptions options) : base(options)
+        {}
 
         public DbSet<Calendar> Calendars { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -29,6 +28,12 @@ namespace rbp.Persistence.EFCore
         public async new Task<bool> SaveChanges()
         {
             return (await base.SaveChangesAsync() > 0);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

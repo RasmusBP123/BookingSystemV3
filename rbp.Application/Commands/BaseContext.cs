@@ -8,10 +8,10 @@ namespace rbp.Application.Commands
 {
     public class BaseContext
     {
-        protected readonly IApplicationDBContext _dbContext;
+        protected readonly ICalendarContext _dbContext;
         protected readonly IMapper _mapper;
 
-        protected BaseContext(IApplicationDBContext dbContext, IMapper mapper)
+        protected BaseContext(ICalendarContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

@@ -12,7 +12,7 @@ namespace Application.UseCases.CreateBooking
 {
     internal class CreateBookingHandler : BaseContext, IRequestHandler<CreateBookingCommand, bool>
     {
-        public CreateBookingHandler(IApplicationDBContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public CreateBookingHandler(ICalendarContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
@@ -22,7 +22,7 @@ namespace Application.UseCases.CreateBooking
             var booking = new Booking(request.From, request.To);
 
 
-            var timeslot = _dbContext.Timeslots.Include(t => t.Bookings).FirstOrDefault(timeslot => timeslot.Id == request.TimeslotId);
+            var timeslot = await _dbContext.Timeslots.FindAsync(request.TimeslotId);
 
             if (timeslot.IsBookingPossible(booking))
             {

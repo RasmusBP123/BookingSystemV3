@@ -7,9 +7,15 @@ namespace Domain.Entities.Joint
 {
     public class StudentTeam
     {
-        public Guid StudentId { get; set; }
-        public Student Student { get; set; }
-        public Guid TeamId { get; set; }
-        public Team Team { get; set; }
+        public Guid StudentId { get; private set; }
+        public virtual Student Student { get; private set; }
+        public Guid TeamId { get; private set; }
+        public virtual Team Team { get; private set; }
+
+        public StudentTeam(Guid studentId, Guid teamId)
+        {
+            StudentId = studentId;
+            TeamId = teamId;
+        }
     }
 }

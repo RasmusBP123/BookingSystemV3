@@ -12,9 +12,9 @@ namespace rbp.Persistence.EFCore
     public class CalendarRepository : ICalendarRepository
     {
         private readonly IMediator _mediator;
-        private readonly ApplicationContext _context;
+        private readonly CalendarContext _context;
 
-        public CalendarRepository(IMediator mediator, ApplicationContext context)
+        public CalendarRepository(IMediator mediator, CalendarContext context)
         {
             _mediator = mediator;
             _context = context;

@@ -11,14 +11,14 @@ namespace Application.CommandUseCases.AttachTeachersToCalendar
 {
     internal class AttachTeachersToCalendarHandler : BaseContext, IRequestHandler<AttachTeachersToCalendarCommand>
     {
-        public AttachTeachersToCalendarHandler(IApplicationDBContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public AttachTeachersToCalendarHandler(ICalendarContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
         public async Task<Unit> Handle(AttachTeachersToCalendarCommand request, CancellationToken cancellationToken)
         {
-            Calendar calendar = _dbContext.Calendars.FirstOrDefault(c => c.Id == request.CalendarId);
-            var teacherCalendars = request.Teachers.Select(tc => new TeacherCalendar { TeacherId = tc.Id, CalendarId = calendar.Id });
+            Calendar calendar = await _dbContext.Calendars.FindAsync(request.CalendarId);
+            var teacherCalendars = request.Teachers.Select(tc => new TeacherCalendar(tc.Id, calendar.Id));
 
             calendar.AddTeachers(teacherCalendars);
             await _dbContext.SaveChanges();

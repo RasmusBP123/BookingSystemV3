@@ -5,6 +5,7 @@ using System.Text;
 
 namespace rbp.Domain.Abstractions
 {
+    //Started on some event sourcing. Needs to be refactored
     public class AggregateRoot<TId> : Entity<Guid>
     {
         public int Version { get; protected set; }

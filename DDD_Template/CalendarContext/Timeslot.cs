@@ -11,12 +11,13 @@ namespace Domain.Entities
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
         public virtual List<Booking> Bookings { get; private set; } = new List<Booking>();
-        public Guid CalendarId { get; private set; }
-        public Guid TeacherId { get; private set; }
+        public virtual Calendar Calendar { get; private set; }
+        public virtual Teacher Teacher { get; private set; }
 
         public Timeslot(string description, DateTime from, DateTime to)
         {
             Description = description;
+            From = from;
             To = to;
         }
 

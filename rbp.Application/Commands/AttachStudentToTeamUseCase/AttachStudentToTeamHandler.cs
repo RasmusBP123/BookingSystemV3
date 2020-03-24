@@ -11,14 +11,14 @@ namespace Application.UseCases.AttachStudentToTeam
 {
     public class AttachStudentToTeamHandler : BaseContext, IRequestHandler<AttachStudentToTeamCommand>
     {
-        public AttachStudentToTeamHandler(IApplicationDBContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public AttachStudentToTeamHandler(ICalendarContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
         public async Task<Unit> Handle(AttachStudentToTeamCommand request, CancellationToken cancellationToken)
         {
             var team = _dbContext.Teams.FirstOrDefault(t => t.Id == request.TeamId);
-            var studentTeams = request.Students.Select(st => new StudentTeam { StudentId = st.Id, TeamId = team.Id});
+            var studentTeams = request.Students.Select(st => new StudentTeam(st.Id, team.Id));
 
             team.AttachStudents(studentTeams);
             await _dbContext.SaveChanges();
