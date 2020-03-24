@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,14 +7,23 @@ namespace rbp.Domain.Abstractions
 {
     public class AggregateRoot<TId> : Entity<Guid>
     {
-        protected override void EnsureValidState(object @event)
+        public int Version { get; protected set; }
+
+        private List<INotification> _events = new List<INotification>();
+
+        public void Apply(INotification @event)
         {
-            throw new NotImplementedException();
+            _events.Add(@event);
         }
 
-        protected override void When(object @event)
+        public void ClearChanges()
         {
-            throw new NotImplementedException();
+            _events.Clear();
+        }
+
+        public List<INotification> GetAllDomainEvents()
+        {
+            return _events;
         }
     }
 }
