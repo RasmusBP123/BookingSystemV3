@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using rbp.Persistence.EFCore;
 
 namespace rbp.Persistence.Migrations
 {
     [DbContext(typeof(CalendarContext))]
-    partial class CalendarContextModelSnapshot : ModelSnapshot
+    [Migration("20200325121220_datetimerange")]
+    partial class datetimerange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +26,9 @@ namespace rbp.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
 
                     b.Property<Guid?>("StudentId")
                         .HasColumnType("uniqueidentifier");
@@ -151,8 +156,14 @@ namespace rbp.Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("TeacherId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -171,8 +182,7 @@ namespace rbp.Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Timeslot", null)
                         .WithMany("Bookings")
-                        .HasForeignKey("TimeslotId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TimeslotId");
 
                     b.OwnsOne("rbp.Domain.CalendarContext.DateTimeRange", "Range", b1 =>
                         {
@@ -246,27 +256,6 @@ namespace rbp.Persistence.Migrations
                     b.HasOne("Domain.Entities.Teacher", "Teacher")
                         .WithMany("Timeslots")
                         .HasForeignKey("TeacherId");
-
-                    b.OwnsOne("rbp.Domain.CalendarContext.DateTimeRange", "Range", b1 =>
-                        {
-                            b1.Property<Guid>("TimeslotId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateTime>("From")
-                                .HasColumnName("From")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("To")
-                                .HasColumnName("To")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("TimeslotId");
-
-                            b1.ToTable("Timeslots");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TimeslotId");
-                        });
                 });
 #pragma warning restore 612, 618
         }

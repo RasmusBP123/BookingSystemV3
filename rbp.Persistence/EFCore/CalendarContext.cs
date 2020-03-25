@@ -3,6 +3,8 @@ using Domain.Entities.Joint;
 using Microsoft.EntityFrameworkCore;
 using rbp.Domain;
 using rbp.Domain.Abstractions;
+using rbp.Domain.CalendarContext;
+using rbp.Domain.CalendarContext.Events;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -33,6 +35,47 @@ namespace rbp.Persistence.EFCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<Calendar>(x =>
+            {
+                x.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
+            });
+
+            modelBuilder.Entity<Student>(x =>
+            {
+                x.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
+            });
+
+            modelBuilder.Entity<Team>(x =>
+            {
+                x.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
+            });
+
+            modelBuilder.Entity<Teacher>(x =>
+            {
+                x.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
+            });
+
+            modelBuilder.Entity<Timeslot>(x =>
+            {
+                x.OwnsOne(p => p.Range, p =>
+                {
+                    p.Property(pp => pp.From).HasColumnName("From");
+                    p.Property(pp => pp.To).HasColumnName("To");
+                });
+                x.HasMany(p => p.Bookings).WithOne().OnDelete(DeleteBehavior.Cascade);
+
+            });
+
+            modelBuilder.Entity<Booking>(x =>
+            {
+                x.OwnsOne(p => p.Range, p =>
+                {
+                    p.Property(pp => pp.From).HasColumnName("From");
+                    p.Property(pp => pp.To).HasColumnName("To");
+                });
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.AttachStudentToTeam
 {
-    public class AttachStudentToTeamHandler : BaseContext, IRequestHandler<AttachStudentToTeamCommand>
+    internal class AttachStudentToTeamHandler : BaseContext, IRequestHandler<AttachStudentToTeamCommand>
     {
         public AttachStudentToTeamHandler(ICalendarContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {

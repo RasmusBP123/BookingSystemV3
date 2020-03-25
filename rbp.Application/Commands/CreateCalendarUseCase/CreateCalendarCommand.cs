@@ -7,11 +7,10 @@ namespace Application.UseCases.CreateCalendar
     {
         public string Name { get; set; }
         public Guid TeacherId { get; set; }
-        public string Mame { get; }
 
-        public CreateCalendarCommand(string mame)
+        public CreateCalendarCommand(string name)
         {
-            Mame = mame;
+            Name = name;
         }
 
         public CreateCalendarCommand(string name, Guid teacherId)

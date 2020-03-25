@@ -11,7 +11,7 @@ namespace rbp.Application.Commands
         protected readonly ICalendarContext _dbContext;
         protected readonly IMapper _mapper;
 
-        protected BaseContext(ICalendarContext dbContext, IMapper mapper)
+        public BaseContext(ICalendarContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

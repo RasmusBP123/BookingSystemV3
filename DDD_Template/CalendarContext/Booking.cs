@@ -1,30 +1,27 @@
 ﻿using rbp.Domain.Abstractions;
+using rbp.Domain.CalendarContext;
 using System;
 
 namespace Domain.Entities
 {
     public class Booking : Entity<Guid>
     {
-        public DateTime From { get; private set; }
-        public DateTime To { get; private set; }
+        public virtual DateTimeRange Range { get; private set; }
         public virtual Student Student { get; private set; }
-        public TimeSpan Duration { get; private set; }
 
-
-        public Booking(DateTime from, DateTime to) : this()
+        public Booking(DateTimeRange range)
         {
-            From = from;
-            To = to;
+            Range = range;
         }
 
-        private Booking()
+        protected Booking()
         {
         }
 
-        public void GetDurationOfBooking(DateTime from, DateTime to)
+        public TimeSpan GetDurationOfBooking(DateTimeRange range)
         {
-            TimeSpan result = to - from;
-            Duration = result;
+            TimeSpan result = range.To - range.From;
+            return result;
         }
     }
 }

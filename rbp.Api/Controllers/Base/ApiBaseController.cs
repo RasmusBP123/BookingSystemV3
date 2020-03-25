@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace rbp.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class CustomBaseController : Controller
+    public class ApiBaseController : Controller
     {
         protected readonly IMediator _mediator;
 
-        public CustomBaseController(IMediator mediator)
+        public ApiBaseController(IMediator mediator)
         {
             _mediator = mediator;
         }

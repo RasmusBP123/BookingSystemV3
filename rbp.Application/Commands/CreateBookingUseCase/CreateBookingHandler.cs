@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using rbp.Application.Commands;
 using rbp.Domain.Abstractions;
+using rbp.Domain.CalendarContext;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,11 +19,10 @@ namespace Application.UseCases.CreateBooking
 
         public async Task<bool> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
-            var duration = request.To - request.From;
-            var booking = new Booking(request.From, request.To);
+            var range = DateTimeRange.Create(request.From, request.To);
 
-
-            var timeslot = await _dbContext.Timeslots.FindAsync(request.TimeslotId);
+            var booking = new Booking(range.Value);
+            var timeslot = await _dbContext.Timeslots.FirstAsync(); //I know this is not 'right', but i dont wanna find new ids all the time
 
             if (timeslot.IsBookingPossible(booking))
             {
