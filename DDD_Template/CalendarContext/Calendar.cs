@@ -1,5 +1,6 @@
 ﻿using rbp.Domain.Abstractions;
 using rbp.Domain.CalendarContext;
+using rbp.Domain.CalendarContext.Events;
 using System;
 using System.Collections.Generic;
 
@@ -35,6 +36,11 @@ namespace Domain.Entities
 
         public void EditName(Name name)
         {
+            if (Name != name)
+            {
+                RaiseDomainEvent(new CalendarInfoChangedEvent(Id, name));
+            }
+
             Name = name;
         }
     }

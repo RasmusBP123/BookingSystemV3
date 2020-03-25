@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using rbp.Domain.CalendarContext.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -9,21 +10,22 @@ namespace rbp.Domain.Abstractions
     {
         public int Version { get; protected set; }
 
-        private List<INotification> _events = new List<INotification>();
+        private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
 
-        public void Apply(INotification @event)
+        protected void RaiseDomainEvent(IDomainEvent domainEvent)
         {
-            _events.Add(@event);
+            _domainEvents.Add(domainEvent);
         }
 
-        public void ClearChanges()
+        public void ClearDomainEvents()
         {
-            _events.Clear();
+            _domainEvents.Clear();
         }
 
-        public List<INotification> GetAllDomainEvents()
+        public List<IDomainEvent> GetAllDomainEvents()
         {
-            return _events;
+            return _domainEvents;
         }
     }
 }

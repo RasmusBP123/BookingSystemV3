@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class Timeslot : Entity<Guid>
     {
-        public string Description { get; private set; }
+        public string Description { get; private set; } //Should probably be a value object, but I did proof of concept with DateTimeRange and Name
         public virtual DateTimeRange Range { get; private set; }
         public virtual List<Booking> Bookings { get; private set; } = new List<Booking>();
         public virtual Calendar Calendar { get; private set; }

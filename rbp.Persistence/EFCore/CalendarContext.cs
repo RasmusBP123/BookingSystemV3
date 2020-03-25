@@ -1,22 +1,26 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Joint;
 using Microsoft.EntityFrameworkCore;
-using rbp.Domain;
 using rbp.Domain.Abstractions;
 using rbp.Domain.CalendarContext;
 using rbp.Domain.CalendarContext.Events;
+using rbp.Persistence.EFCore.EventStore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace rbp.Persistence.EFCore
 {
     public class CalendarContext : DbContext, ICalendarContext
     {
-        public CalendarContext(DbContextOptions options) : base(options)
-        {}
+        private readonly IEventDispatcher _eventDispatcher;
+
+        public CalendarContext(DbContextOptions options, IEventDispatcher eventDispatcher) : base(options)
+        {
+            _eventDispatcher = eventDispatcher;
+        }
 
         public DbSet<Calendar> Calendars { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -29,7 +33,20 @@ namespace rbp.Persistence.EFCore
 
         public async new Task<bool> SaveChanges()
         {
-            return (await base.SaveChangesAsync() > 0);
+            List<AggregateRoot<Guid>> entities = ChangeTracker
+                .Entries()
+                .Where(x => x.Entity is AggregateRoot<Guid>)
+                .Select(x => (AggregateRoot<Guid>)x.Entity).ToList();
+
+            var result = await base.SaveChangesAsync() > 0;
+
+            foreach (var entity in entities)
+            {
+                _eventDispatcher.Dispatch(entity.DomainEvents);
+                entity.ClearDomainEvents();
+            }
+
+            return result;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

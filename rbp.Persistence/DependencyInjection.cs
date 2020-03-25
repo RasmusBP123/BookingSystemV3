@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using rbp.Domain.Abstractions;
 using rbp.Domain.CalendarContext.Interfaces;
 using rbp.Persistence.EFCore;
+using rbp.Persistence.EFCore.EventStore;
+using rbp.Persistence.EFCore.Messaging;
 using System.Reflection;
 
 namespace rbp.Persistence
@@ -21,6 +23,10 @@ namespace rbp.Persistence
 
             services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<ICalendarContext, CalendarContext>();
+
+            services.AddScoped<IBus, Bus>();
+            services.AddScoped<IMessageBus, MessageBus>();
+            services.AddScoped<IEventDispatcher, EventDispatcher>();
 
             return services;
         }

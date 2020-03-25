@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using rbp.Application._Common.Mappings;
+using rbp.Domain.CalendarContext.Interfaces;
 using System.Reflection;
 
 namespace rbp.Application
