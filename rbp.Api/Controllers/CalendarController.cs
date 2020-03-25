@@ -1,6 +1,7 @@
 ﻿using Application.UseCases.CreateCalendar;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using rbp.Application.Queries.GetCalendarUseCase;
 using System;
 using System.Threading.Tasks;
 
@@ -18,6 +19,13 @@ namespace rbp.WebApi.Controllers
             var calendarCommand = new CreateCalendarCommand("My new Calendar", new Guid("4a8ca1a8-a832-4d69-9ff5-b3549dde0407"));
             await _mediator.Send(calendarCommand);
             return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCalendar([FromRoute] Guid id)
+        {
+            var calendar = await _mediator.Send(new GetCalendarQuery(id));
+            return Ok(calendar);
         }
     }
 }

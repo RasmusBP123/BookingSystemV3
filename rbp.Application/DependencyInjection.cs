@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using rbp.Application._Common.Mappings;
 using System.Reflection;
 
 namespace rbp.Application
@@ -11,9 +12,18 @@ namespace rbp.Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            RegisterMappings();
 
             return services;
 
         }
+        public static MapperConfiguration RegisterMappings()
+        {
+            return new MapperConfiguration(profile =>
+            {
+                profile.AddProfile(new DomainToViewModelProfile());
+            });
+        }
+
     }
 }
