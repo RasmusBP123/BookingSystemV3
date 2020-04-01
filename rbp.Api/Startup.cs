@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using rbp.Application;
+using rbp.Infrastructure;
 using rbp.Persistence;
+using rbp.WebApi.Middleware;
 
 namespace rbp.Api
 {
@@ -23,6 +25,7 @@ namespace rbp.Api
             services.AddControllers();
             services.RegisterApplication();
             services.RegisterPeristence(Configuration);
+            services.RegisterInfrastructure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +35,8 @@ namespace rbp.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<ExceptionHandler>();
 
             app.UseHttpsRedirection();
 

@@ -18,6 +18,8 @@ namespace Domain.Entities
             Name = name;
         }
 
+        private Calendar() { }
+
         public Calendar(Guid id, List<Timeslot> timeslots)
         {
             Id = id;
